@@ -1,8 +1,0 @@
-{
-  "name": "Rádio Viva",
-  "short_name": "Rádio Viva",
-  "start_url": "index.html",
-  "display": "standalone",
-  "background_color": "#203a43",
-  "theme_color": "#203a43"
-}
