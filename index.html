@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rádio Viva</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        body {
+            margin: 0; padding: 0;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); 
+            color: white; font-family: sans-serif; 
+            display: flex; align-items: center; justify-content: center; 
+            height: 100vh; text-align: center;
+        }
+        .box {
+            background: rgba(255, 255, 255, 0.1); 
+            padding: 40px 25px; border-radius: 20px; 
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3); 
+            width: 85%; max-width: 360px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        h1 { margin: 0 0 8px 0; font-size: 32px; color: #f1c40f; }
+        p { margin: 0 0 30px 0; font-size: 16px; opacity: 0.8; font-style: italic; }
+        iframe { width: 100%; height: 65px; border: none; border-radius: 10px; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>🕊️ Rádio Viva</h1>
+        <p>A Rádio da Família Cristã</p>
+        <iframe src="http://morcast.caster.fm:13918/K8F1I"></iframe>
+    </div>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').catch(() => {});
+        }
+    </script>
+</body>
+</html>
