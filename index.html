@@ -45,24 +45,6 @@
         .eq-2 { animation: eq-bar 0.6s infinite ease-in-out 0.2s; }
         .eq-3 { animation: eq-bar 1.1s infinite ease-in-out 0.1s; }
         .eq-4 { animation: eq-bar 0.75s infinite ease-in-out 0.3s; }
-
-        /* Estilização do container do player Caster.fm */
-        .cstrEmbed {
-            width: 100% !important;
-            min-height: 92px;
-            border-radius: 14px;
-            overflow: hidden;
-            position: relative;
-        }
-        .cstrEmbed iframe {
-            width: 100% !important;
-            border-radius: 14px !important;
-            display: block;
-        }
-        /* Esconde links de fallback de SEO antes da renderização */
-        .cstrEmbed > a {
-            display: none !important;
-        }
     </style>
 </head>
 <body id="page-body" class="min-h-screen bg-gradient-to-b from-slate-50 via-blue-50/40 to-amber-50/30 text-slate-900 flex flex-col justify-between transition-colors duration-300 selection:bg-[#005CFF] selection:text-white">
@@ -133,7 +115,7 @@
                 </p>
             </div>
 
-            <!-- Seção do Player Caster.fm -->
+            <!-- Seção do Player Icecast2 -->
             <div id="player-section" class="p-5 sm:p-7 bg-slate-50/70 transition-colors duration-300">
                 <div class="flex items-center justify-between mb-3 px-1">
                     <span id="player-label" class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
@@ -146,22 +128,12 @@
                     </span>
                 </div>
 
-                <!-- Widget Oficial Caster.fm -->
-                <div id="player-box" class="w-full rounded-2xl bg-white p-2 border border-slate-200/90 shadow-inner">
-                    <div
-                        data-type="newStreamPlayer"
-                        data-publicToken="5aa71dc3-8f20-42e7-8713-9b036ceaeea1"
-                        data-theme="light"
-                        data-color="005CFF"
-                        data-channelId="a33590cc-edb3-46f1-b754-954ea5c57a25"
-                        data-rendered="false"
-                        class="cstrEmbed"
-                    >
-                        <a href="https://www.caster.fm">Shoutcast Hosting</a>
-                        <a href="https://www.caster.fm">Stream Hosting</a>
-                        <a href="https://www.caster.fm">Radio Server Hosting</a>
-                    </div>
-                    <script src="https://cdn.cloud.caster.fm/widgets/embed.js"></script>
+                <!-- Player Nativo Icecast2 -->
+                <div id="player-box" class="w-full rounded-2xl bg-white p-4 border border-slate-200/90 shadow-inner flex flex-col items-center gap-3">
+                    <audio id="audio-stream" controls preload="none" class="w-full">
+                        <source src="COLE_O_LINK_DO_TUNEL_AQUI/live" type="audio/mpeg">
+                        Seu navegador não suporta o player de áudio.
+                    </audio>
                 </div>
 
                 <p id="audio-hint" class="text-center text-xs text-slate-500 mt-3.5">
@@ -244,6 +216,7 @@
             const radioSlogan = document.getElementById('radio-slogan');
             const playerSection = document.getElementById('player-section');
             const playerLabel = document.getElementById('player-label');
+            const playerBox = document.getElementById('player-box');
             const cardFooter = document.getElementById('card-footer');
             const copyBtn = document.getElementById('copy-link-btn');
             const themeBtn = document.getElementById('theme-toggle-btn');
@@ -263,6 +236,7 @@
                 radioSlogan.className = 'text-base sm:text-lg font-medium text-blue-400 max-w-md mx-auto';
                 playerSection.className = 'p-5 sm:p-7 bg-white/[0.02] transition-colors duration-300';
                 playerLabel.className = 'text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5';
+                playerBox.className = 'w-full rounded-2xl bg-slate-950 p-4 border border-white/10 shadow-inner flex flex-col items-center gap-3';
                 cardFooter.className = 'px-6 py-4 bg-slate-950/60 border-t border-white/10 flex flex-col sm:flex-row items-center gap-2.5 transition-colors duration-300';
                 copyBtn.className = 'w-full sm:flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-white/10 hover:bg-white/15 text-slate-100 border border-white/10 transition-all active:scale-95';
                 themeBtn.className = 'inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/15 text-slate-100 border border-white/10 shadow-sm transition-all active:scale-95';
@@ -281,6 +255,7 @@
                 radioSlogan.className = 'text-base sm:text-lg font-medium text-[#005CFF] max-w-md mx-auto';
                 playerSection.className = 'p-5 sm:p-7 bg-slate-50/70 transition-colors duration-300';
                 playerLabel.className = 'text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5';
+                playerBox.className = 'w-full rounded-2xl bg-white p-4 border border-slate-200/90 shadow-inner flex flex-col items-center gap-3';
                 cardFooter.className = 'px-6 py-4 bg-white border-t border-slate-100 flex flex-col sm:flex-row items-center gap-2.5 transition-colors duration-300';
                 copyBtn.className = 'w-full sm:flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200/80 text-slate-700 border border-slate-200/80 transition-all active:scale-95';
                 themeBtn.className = 'inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-white/90 hover:bg-white text-slate-700 border border-slate-200/80 shadow-sm transition-all active:scale-95';
