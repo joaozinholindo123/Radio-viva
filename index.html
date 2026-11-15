@@ -115,7 +115,7 @@
                 </p>
             </div>
 
-            <!-- Seção do Player (Apontando para o GitHub Pages como Ponte) -->
+            <!-- Seção do Player Customizado -->
             <div id="player-section" class="p-5 sm:p-7 bg-slate-50/70 transition-colors duration-300">
                 <div class="flex items-center justify-between mb-3 px-1">
                     <span id="player-label" class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
@@ -128,20 +128,34 @@
                     </span>
                 </div>
 
-                <!-- Player Nativo conectado ao GitHub Pages -->
-                <div id="player-box" class="w-full rounded-2xl bg-white p-4 border border-slate-200/90 shadow-inner flex flex-col items-center gap-3">
-                    <audio id="audio-stream" controls preload="none" class="w-full">
+                <!-- Player Customizado (Sem controles nativos chatos) -->
+                <div id="player-box" class="w-full rounded-2xl bg-white p-6 border border-slate-200/90 shadow-inner flex flex-col items-center gap-4">
+                    <!-- Elemento de áudio invisível conectado ao GitHub Pages / Ponte -->
+                    <audio id="audio-stream" preload="none">
                         <source src="https://joaozinholindo123.github.io/Radio-viva-icecast2/" type="audio/mpeg">
                         Seu navegador não suporta o player de áudio.
                     </audio>
-                    <div class="flex items-center justify-between w-full text-[11px] text-slate-500 px-1">
-                        <span>Status: <strong id="stream-status" class="text-amber-600">Aguardando play</strong></span>
-                        <button onclick="conectarRadio()" class="text-[#005CFF] hover:underline font-semibold">▶ Conectar / Sintonizar</button>
+
+                    <!-- Botão Principal de Play/Pause Redondo -->
+                    <button
+                        type="button"
+                        onclick="togglePlayRadio()"
+                        id="play-main-btn"
+                        class="w-16 h-16 rounded-full bg-gradient-to-tr from-[#005CFF] to-blue-500 text-white flex items-center justify-center shadow-lg shadow-blue-500/30 hover:scale-105 active:scale-95 transition-all cursor-pointer"
+                        title="Ouvir Rádio"
+                    >
+                        <i data-lucide="play" id="play-icon" class="w-7 h-7 translate-x-0.5"></i>
+                    </button>
+
+                    <!-- Status e Informação -->
+                    <div class="flex flex-col items-center gap-1">
+                        <span id="stream-status" class="text-xs font-bold text-slate-600">Aguardando play</span>
+                        <span class="text-[11px] text-slate-400">Transmissão contínua 24h</span>
                     </div>
                 </div>
 
                 <p id="audio-hint" class="text-center text-xs text-slate-500 mt-3.5">
-                    Clique no botão <strong>Play</strong> acima para iniciar a transmissão da Rádio Viva.
+                    Clique no botão central para iniciar a transmissão da Rádio Viva.
                 </p>
             </div>
 
@@ -151,7 +165,7 @@
                 <button
                     type="button"
                     onclick="shareWhatsApp()"
-                    class="w-full sm:flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-600 hover:bg-emerald-500 text-white shadow-sm transition-all active:scale-95"
+                    class="w-full sm:flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-emerald-600 hover:bg-emerald-500 text-white shadow-sm transition-all active:scale-95 cursor-pointer"
                 >
                     <i data-lucide="share-2" class="w-4 h-4"></i>
                     <span>Compartilhar no WhatsApp</span>
@@ -162,7 +176,7 @@
                     type="button"
                     onclick="copyRadioLink()"
                     id="copy-link-btn"
-                    class="w-full sm:flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200/80 text-slate-700 border border-slate-200/80 transition-all active:scale-95"
+                    class="w-full sm:flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200/80 text-slate-700 border border-slate-200/80 transition-all active:scale-95 cursor-pointer"
                 >
                     <i data-lucide="link" class="w-4 h-4 text-[#005CFF]"></i>
                     <span>Copiar Link</span>
@@ -193,6 +207,7 @@
         }
 
         let isDarkMode = false;
+        let isPlaying = false;
 
         // Exibe aviso flutuante discreto
         function showToast(message) {
@@ -209,23 +224,40 @@
             }, 3000);
         }
 
-        // Função para conectar e reproduzir o stream com segurança
-        function conectarRadio() {
+        // Controle do Player Customizado (Play / Pause)
+        function togglePlayRadio() {
             const audio = document.getElementById('audio-stream');
             const status = document.getElementById('stream-status');
+            const playIcon = document.getElementById('play-icon');
+            const playBtn = document.getElementById('play-main-btn');
 
-            status.textContent = 'Conectando...';
-            status.className = 'text-blue-600 font-bold';
+            if (!isPlaying) {
+                status.textContent = 'Conectando...';
+                status.className = 'text-blue-600 font-bold';
 
-            audio.load();
-            audio.play().then(() => {
-                status.textContent = 'Ao Vivo';
-                status.className = 'text-emerald-600 font-bold';
-            }).catch((error) => {
-                status.textContent = 'Erro / Verifique o Túnel';
-                status.className = 'text-red-600 font-bold';
-                console.error(error);
-            });
+                audio.load();
+                audio.play().then(() => {
+                    isPlaying = true;
+                    status.textContent = 'Ao Vivo';
+                    status.className = 'text-emerald-600 font-bold';
+                    playIcon.setAttribute('data-lucide', 'square');
+                    playBtn.className = 'w-16 h-16 rounded-full bg-gradient-to-tr from-red-600 to-rose-500 text-white flex items-center justify-center shadow-lg shadow-red-500/30 hover:scale-105 active:scale-95 transition-all cursor-pointer';
+                    if (window.lucide) lucide.createIcons();
+                }).catch((error) => {
+                    status.textContent = 'Erro / Verifique o Túnel';
+                    status.className = 'text-red-600 font-bold';
+                    console.error(error);
+                });
+            } else {
+                audio.pause();
+                audio.currentTime = 0;
+                isPlaying = false;
+                status.textContent = 'Pausado';
+                status.className = 'text-slate-500 font-bold';
+                playIcon.setAttribute('data-lucide', 'play');
+                playBtn.className = 'w-16 h-16 rounded-full bg-gradient-to-tr from-[#005CFF] to-blue-500 text-white flex items-center justify-center shadow-lg shadow-blue-500/30 hover:scale-105 active:scale-95 transition-all cursor-pointer';
+                if (window.lucide) lucide.createIcons();
+            }
         }
 
         // Alterna entre Tema Claro Acolhedor e Tema Escuro Noturno
@@ -259,10 +291,10 @@
                 radioSlogan.className = 'text-base sm:text-lg font-medium text-blue-400 max-w-md mx-auto';
                 playerSection.className = 'p-5 sm:p-7 bg-white/[0.02] transition-colors duration-300';
                 playerLabel.className = 'text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5';
-                playerBox.className = 'w-full rounded-2xl bg-slate-950 p-4 border border-white/10 shadow-inner flex flex-col items-center gap-3';
+                playerBox.className = 'w-full rounded-2xl bg-slate-950 p-6 border border-white/10 shadow-inner flex flex-col items-center gap-4';
                 cardFooter.className = 'px-6 py-4 bg-slate-950/60 border-t border-white/10 flex flex-col sm:flex-row items-center gap-2.5 transition-colors duration-300';
-                copyBtn.className = 'w-full sm:flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-white/10 hover:bg-white/15 text-slate-100 border border-white/10 transition-all active:scale-95';
-                themeBtn.className = 'inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/15 text-slate-100 border border-white/10 shadow-sm transition-all active:scale-95';
+                copyBtn.className = 'w-full sm:flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-white/10 hover:bg-white/15 text-slate-100 border border-white/10 transition-all active:scale-95 cursor-pointer';
+                themeBtn.className = 'inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-white/10 hover:bg-white/15 text-slate-100 border border-white/10 shadow-sm transition-all active:scale-95 cursor-pointer';
                 familyPill.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold bg-amber-400/15 text-amber-300 border border-amber-400/25 mb-3';
                 liveBadge.className = 'inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-red-500/15 text-red-400 border border-red-500/30 shadow-sm';
                 headerSubtitle.className = 'text-xs font-medium text-slate-400 hidden sm:inline';
@@ -278,10 +310,10 @@
                 radioSlogan.className = 'text-base sm:text-lg font-medium text-[#005CFF] max-w-md mx-auto';
                 playerSection.className = 'p-5 sm:p-7 bg-slate-50/70 transition-colors duration-300';
                 playerLabel.className = 'text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5';
-                playerBox.className = 'w-full rounded-2xl bg-white p-4 border border-slate-200/90 shadow-inner flex flex-col items-center gap-3';
+                playerBox.className = 'w-full rounded-2xl bg-white p-6 border border-slate-200/90 shadow-inner flex flex-col items-center gap-4';
                 cardFooter.className = 'px-6 py-4 bg-white border-t border-slate-100 flex flex-col sm:flex-row items-center gap-2.5 transition-colors duration-300';
-                copyBtn.className = 'w-full sm:flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200/80 text-slate-700 border border-slate-200/80 transition-all active:scale-95';
-                themeBtn.className = 'inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-white/90 hover:bg-white text-slate-700 border border-slate-200/80 shadow-sm transition-all active:scale-95';
+                copyBtn.className = 'w-full sm:flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-slate-100 hover:bg-slate-200/80 text-slate-700 border border-slate-200/80 transition-all active:scale-95 cursor-pointer';
+                themeBtn.className = 'inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold bg-white/90 hover:bg-white text-slate-700 border border-slate-200/80 shadow-sm transition-all active:scale-95 cursor-pointer';
                 familyPill.className = 'inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold bg-amber-500/10 text-amber-700 border border-amber-500/20 mb-3';
                 liveBadge.className = 'inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-red-500/10 text-red-600 border border-red-500/25 shadow-sm';
                 headerSubtitle.className = 'text-xs font-medium text-slate-500 hidden sm:inline';
