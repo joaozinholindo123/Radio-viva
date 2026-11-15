@@ -115,7 +115,7 @@
                 </p>
             </div>
 
-            <!-- Seção do Player Icecast2 -->
+            <!-- Seção do Player (Apontando para o GitHub Pages como Ponte) -->
             <div id="player-section" class="p-5 sm:p-7 bg-slate-50/70 transition-colors duration-300">
                 <div class="flex items-center justify-between mb-3 px-1">
                     <span id="player-label" class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
@@ -128,7 +128,7 @@
                     </span>
                 </div>
 
-                <!-- Player Nativo Icecast2 Ajustado (Link Único MP3) -->
+                <!-- Player Nativo conectado ao GitHub Pages -->
                 <div id="player-box" class="w-full rounded-2xl bg-white p-4 border border-slate-200/90 shadow-inner flex flex-col items-center gap-3">
                     <audio id="audio-stream" controls preload="none" class="w-full">
                         <source src="https://joaozinholindo123.github.io/Radio-viva-icecast2/" type="audio/mpeg">
@@ -213,10 +213,10 @@
         function conectarRadio() {
             const audio = document.getElementById('audio-stream');
             const status = document.getElementById('stream-status');
-            
+
             status.textContent = 'Conectando...';
             status.className = 'text-blue-600 font-bold';
-            
+
             audio.load();
             audio.play().then(() => {
                 status.textContent = 'Ao Vivo';
