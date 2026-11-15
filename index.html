@@ -128,12 +128,16 @@
                     </span>
                 </div>
 
-                <!-- Player Nativo Icecast2 -->
+                <!-- Player Nativo Icecast2 Ajustado (Link Único MP3) -->
                 <div id="player-box" class="w-full rounded-2xl bg-white p-4 border border-slate-200/90 shadow-inner flex flex-col items-center gap-3">
                     <audio id="audio-stream" controls preload="none" class="w-full">
-                        <source src="COLE_O_LINK_DO_TUNEL_AQUI/live" type="audio/mpeg">
+                        <source src="https://lawrence-drawing-bob-penny.trycloudflare.com/live" type="audio/mpeg">
                         Seu navegador não suporta o player de áudio.
                     </audio>
+                    <div class="flex items-center justify-between w-full text-[11px] text-slate-500 px-1">
+                        <span>Status: <strong id="stream-status" class="text-amber-600">Aguardando play</strong></span>
+                        <button onclick="conectarRadio()" class="text-[#005CFF] hover:underline font-semibold">▶ Conectar / Sintonizar</button>
+                    </div>
                 </div>
 
                 <p id="audio-hint" class="text-center text-xs text-slate-500 mt-3.5">
@@ -203,6 +207,25 @@
                 toast.classList.add('opacity-0', 'translate-y-3');
                 toast.classList.remove('opacity-100', 'translate-y-0');
             }, 3000);
+        }
+
+        // Função para conectar e reproduzir o stream com segurança
+        function conectarRadio() {
+            const audio = document.getElementById('audio-stream');
+            const status = document.getElementById('stream-status');
+            
+            status.textContent = 'Conectando...';
+            status.className = 'text-blue-600 font-bold';
+            
+            audio.load();
+            audio.play().then(() => {
+                status.textContent = 'Ao Vivo';
+                status.className = 'text-emerald-600 font-bold';
+            }).catch((error) => {
+                status.textContent = 'Erro / Verifique o Túnel';
+                status.className = 'text-red-600 font-bold';
+                console.error(error);
+            });
         }
 
         // Alterna entre Tema Claro Acolhedor e Tema Escuro Noturno
