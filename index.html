@@ -130,7 +130,7 @@
 
                 <!-- Player Customizado -->
                 <div id="player-box" class="w-full rounded-2xl bg-white p-6 border border-slate-200/90 shadow-inner flex flex-col items-center gap-4">
-                    
+
                     <!-- Elemento de áudio invisível -->
                     <audio id="audio-stream" preload="none">
                         Seu navegador não suporta o player de áudio.
@@ -287,7 +287,7 @@
 
                 const baseUrl = (qualidadeAtual === 'alta') ? URL_ALTA : URL_BAIXA;
                 audio.src = baseUrl + "?t=" + Date.now();
-                
+
                 audio.load();
                 audio.play().then(() => {
                     isPlaying = true;
